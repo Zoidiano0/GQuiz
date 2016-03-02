@@ -30,20 +30,18 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <Button
-            android:drawableLeft="@drawable/arrow_left"
-            android:drawablePadding="5dp"
+        <ImageButton
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/prev_button"
+            android:src="@drawable/arrow_left"
             android:id="@+id/prev_button"/>
-        <Button
-            android:drawableRight="@drawable/arrow_right"
-            android:drawablePadding="5dp"
+        <ImageButton
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/next_button"
-            android:id="@+id/next_button"/>
+            android:id="@+id/next_button"
+            android:src="@drawable/arrow_right"/>
 
 
 
