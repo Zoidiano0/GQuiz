@@ -3,6 +3,7 @@ package com.hanstap.gquiz;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
-
+    private static final String TAG="ActivityQuiz";
+    private static final String KEY_INDEX="index";
     private Button mTrueButton;
     private Button mFalseButton;
     private ImageButton mNextButton;
@@ -32,8 +34,10 @@ public class QuizActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+        Log.d(TAG, "OnCreateMethod");
         mQuestionTextView =(TextView)findViewById(R.id.question_text_view);
         mTrueButton = (Button)findViewById(R.id.true_button);
         mFalseButton = (Button)findViewById(R.id.false_button);
@@ -56,11 +60,10 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateQuestion();
+                NextQuestion();
             }
         });
 
@@ -77,16 +80,31 @@ public class QuizActivity extends AppCompatActivity {
                 updateQuestion();
             }
         });
+        if (savedInstanceState==null){NextQuestion();}
+        if(savedInstanceState!= null){
+            mCurrentindex=savedInstanceState.getInt(KEY_INDEX,0);
+            updateQuestion();
+        }
 
-        updateQuestion();
+
+
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt(KEY_INDEX,mCurrentindex);
+    }
 
-
-
-    private void updateQuestion(){
+    private void NextQuestion(){
         mCurrentindex=(mCurrentindex+1)%mQuestionBank.length;
+        int question = mQuestionBank[mCurrentindex].getTextResId();
+        mQuestionTextView.setText(question);
+
+    }
+    private void updateQuestion(){
+        mCurrentindex=(mCurrentindex)%mQuestionBank.length;
         int question = mQuestionBank[mCurrentindex].getTextResId();
         mQuestionTextView.setText(question);
 
@@ -140,7 +158,11 @@ public class QuizActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(TAG,"OnStartMethod");
+    }
 
 
 }
